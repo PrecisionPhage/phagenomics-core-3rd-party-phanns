@@ -253,11 +253,7 @@ class ann_result:
             else:
                 csv_path = csv_filename
             table1.astype(float).to_csv(csv_path, float_format = "%.4f")
-            html_style=table1.style.set_uuid("table_1").set_table_styles([{'selector':'table', 'props': [('border', '1px solid black'),('border-collapse','collapse'),('width','100%')]},{'selector':'th', 'props': [('border', '1px solid black'),('padding', '15px')]},{'selector':'td', 'props': [('border', '1px solid black'),('padding', '15px')]}]).format("{:.2f}").highlight_max(axis=1)
-            self.html_table=html_style.render()
-            #table_code_raw= Markup(self.html_table)
-            #pickle.dump(table_code_raw,open('saves/' + ntpath.basename(self.infile),"wb"))
-            #self.generate_fasta(predicted_Y)
+            # HTML styling only needed for web server, skip for CLI usage
             return (names,table1)
 
     def generate_fasta(self, predicted_Y):
