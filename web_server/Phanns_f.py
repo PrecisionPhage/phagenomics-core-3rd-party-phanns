@@ -8,7 +8,7 @@ import tensorflow as tf
 import pandas as pd
 import os
 import ntpath
-from flask import Markup
+from markupsafe import Markup
 import pickle
 from flask_socketio import emit, SocketIO
 
