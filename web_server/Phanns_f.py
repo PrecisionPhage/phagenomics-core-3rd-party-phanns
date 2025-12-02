@@ -8,9 +8,21 @@ import tensorflow as tf
 import pandas as pd
 import os
 import ntpath
-from markupsafe import Markup
 import pickle
-from flask_socketio import emit, SocketIO
+
+# Optional web server dependencies - not needed for CLI usage
+try:
+    from markupsafe import Markup
+    from flask_socketio import emit, SocketIO
+    HAS_FLASK = True
+except ImportError:
+    HAS_FLASK = False
+    # Provide dummy SocketIO for CLI usage
+    class SocketIO:
+        def __init__(self, *args, **kwargs):
+            pass
+        def emit(self, *args, **kwargs):
+            pass
 
 import ann_config
 import load_server
