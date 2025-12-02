@@ -224,7 +224,9 @@ class ann_result:
         
     def predict_score_single_run(self):
             (names,arr)=self.extract_n()
-            yhats = [model.predict(arr) for model in load_server.models]
+            # Reshape for newer Keras: (batch, features) -> (batch, 1, features)
+            arr_reshaped = arr.reshape((arr.shape[0], 1, arr.shape[1]))
+            yhats = [model.predict(arr_reshaped) for model in load_server.models]
             yhats_v=numpy.array(yhats)
             predicted_Y=numpy.sum(yhats_v, axis=0)
             #print(arr)
