@@ -96,7 +96,7 @@ class ann_result:
         total_fasta=self.g_total_fasta
         sec_code=0
         record_current=0
-        arr = numpy.empty((total_fasta,10409), dtype=numpy.float)
+        arr = numpy.empty((total_fasta,10409), dtype=numpy.float64)
         names = numpy.empty((total_fasta,1),  dtype=object)
         names_dic=dict()
         for record in SeqIO.parse(self.infile, "fasta"):
@@ -129,13 +129,13 @@ class ann_result:
             tt= [X.isoelectric_point(), X.instability_index(),ll,X.aromaticity(),
                  X.molar_extinction_coefficient()[0],X.molar_extinction_coefficient()[1],
                  X.gravy(),X.molecular_weight()]
-            tt_n = numpy.asarray(tt,dtype=numpy.float)
+            tt_n = numpy.asarray(tt,dtype=numpy.float64)
 
             tri_pep_count=[seqq.count(i)/(ll-2) for i in tri_pep]
-            tri_pep_count_n = numpy.asarray(tri_pep_count,dtype=numpy.float)
+            tri_pep_count_n = numpy.asarray(tri_pep_count,dtype=numpy.float64)
             
             tetra_sc_count=[myseq.count(i)/(ll-3) for i in tetra_sc]
-            tetra_sc_count_n = numpy.asarray(tetra_sc_count,dtype=numpy.float)
+            tetra_sc_count_n = numpy.asarray(tetra_sc_count,dtype=numpy.float64)
     
             cat_n= numpy.concatenate((tetra_sc_count_n,tri_pep_count_n,tt_n))
             cat_n = cat_n.reshape((1,cat_n.shape[0]))
