@@ -229,6 +229,8 @@ class ann_result:
             yhats = [model.predict(arr_reshaped) for model in load_server.models]
             yhats_v=numpy.array(yhats)
             predicted_Y=numpy.sum(yhats_v, axis=0)
+            # Squeeze out the extra dimension from reshape: (batch, 1, classes) -> (batch, classes)
+            predicted_Y = numpy.squeeze(predicted_Y, axis=1)
             #print(arr)
             #predicted_Y=ann_config.models.predict(arr, verbose=1)
             col_names=["Major capsid","Minor capsid","Baseplate",
