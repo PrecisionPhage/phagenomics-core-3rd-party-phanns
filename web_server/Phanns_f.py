@@ -37,6 +37,7 @@ class ann_result:
     g_socketio = SocketIO()
     g_is_socket = 0
     g_test_stat=''
+    g_output_dir=None
     g_table_format={
             "Major capsid": "{:.2f}",
             "Minor capsid": "{:.2f}",
@@ -51,10 +52,11 @@ class ann_result:
             "Other": "{:.2f}",
             "Confidence": "{:.2%}"
             }
-    def __init__(self, filename,sid_n=8888,socketio=SocketIO()):
+    def __init__(self, filename,sid_n=8888,socketio=SocketIO(),output_dir=None):
         self.infile=filename
         self.g_sid=sid_n
         self.g_socketio=socketio
+        self.g_output_dir=output_dir
         total_fasta=0
         all_fasta=0
         for record in SeqIO.parse(self.infile, "fasta"):
@@ -244,7 +246,13 @@ class ann_result:
             dtype=numpy.float64
             )
             pd.options.display.float_format = '{:.2f}'.format
-            table1.astype(float).to_csv(os.path.splitext(ntpath.basename(self.infile))[0] + '.csv',float_format = "%.4f")
+            # Output CSV to specified directory or current directory
+            csv_filename = os.path.splitext(ntpath.basename(self.infile))[0] + '.csv'
+            if self.g_output_dir:
+                csv_path = os.path.join(self.g_output_dir, csv_filename)
+            else:
+                csv_path = csv_filename
+            table1.astype(float).to_csv(csv_path, float_format = "%.4f")
             html_style=table1.style.set_uuid("table_1").set_table_styles([{'selector':'table', 'props': [('border', '1px solid black'),('border-collapse','collapse'),('width','100%')]},{'selector':'th', 'props': [('border', '1px solid black'),('padding', '15px')]},{'selector':'td', 'props': [('border', '1px solid black'),('padding', '15px')]}]).format("{:.2f}").highlight_max(axis=1)
             self.html_table=html_style.render()
             #table_code_raw= Markup(self.html_table)
